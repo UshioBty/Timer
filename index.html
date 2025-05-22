@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Timer Program by Ushio</title>
+  <style>
+    body {
+      font-family: monospace;
+      background-color: gray;
+      color: black;
+      text-align: center;
+      padding: 2rem;
+    }
+    hr {
+      margin: 1.5rem 0;
+      border: none;
+      border-top: 2px dashed #dedede;
+    }
+    input {
+      border: grey 1px;
+      border-radius: 10px;
+      padding: 0.3rem;
+      margin: 0.5rem;
+      font-size: 1rem;
+      width: 30px;
+      height: 30px;
+    }
+    #inputSection {
+      
+      padding: 75px;
+    }
+    #time {
+      display: flex;
+    }
+    button {
+      padding: 0.7rem 1.2rem;
+      margin: 1rem;
+      border: #dedede 1px;
+      border-radius: 10px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    #timerDisplay {
+      font-size: 2rem;
+      margin-top: 2rem;
+    }
+    #link {
+      padding: 50px;
+    }
+    #linkk {
+      color: black;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <h2>Welcome To Timer</h2>
+  <div id="inputSection">
+    <div id="time">
+      <label><input placeholder="HR" type="number" id="hours" min="0"></label><br>
+      <label><input placeholder="MIN" type="number" id="minutes" min="0"></label><br>
+      <label><input placeholder="SEC" type="number" id="seconds" min="0"></label><br>
+    </div>
+    <div id="button">
+      <button onclick="startTimer()">Start Timer</button>
+    </div>
+  </div>
+
+  <div id="timerDisplay"></div>
+  <div id="afterTimer" style="display: none;">
+    <p>Timer ended! What do you want to do?</p>
+    <button onclick="restart()">Restart Timer</button>
+    <button onclick="exitPage()">Exit</button>
+  </div>
+  <div id="link">
+    <a id="linkk" href="">>>Credits<<</a>
+  </div>
+
+  <script>
+    let totalSeconds = 0;
+    let countdownInterval;
+
+    function startTimer() {
+      const hr = parseInt(document.getElementById("hours").value) || 0;
+      const min = parseInt(document.getElementById("minutes").value) || 0;
+      const sec = parseInt(document.getElementById("seconds").value) || 0;
+
+      totalSeconds = hr * 3600 + min * 60 + sec;
+      if (totalSeconds <= 0) {
+        alert("Please enter a valid time!");
+        return;
+      }
+
+      document.getElementById("inputSection").style.display = "none";
+      updateDisplay();
+      countdownInterval = setInterval(() => {
+        totalSeconds--;
+        updateDisplay();
+        if (totalSeconds <= 0) {
+          clearInterval(countdownInterval);
+          document.getElementById("afterTimer").style.display = "block";
+        }
+      }, 1000);
+    }
+
+    function updateDisplay() {
+      const h = Math.floor(totalSeconds / 3600);
+      const m = Math.floor((totalSeconds % 3600) / 60);
+      const s = totalSeconds % 60;
+      document.getElementById("timerDisplay").textContent =
+        `${h}   ${m}   ${s}`;
+    }
+
+    function restart() {
+      document.getElementById("inputSection").style.display = "block";
+      document.getElementById("button").style.display = "block";
+      document.getElementById("afterTimer").style.display = "none";
+      document.getElementById("timerDisplay").textContent = "";
+      document.getElementById("hours").value = "HR";
+      document.getElementById("minutes").value = "MIN";
+      document.getElementById("seconds").value = "SEC";
+    }
+
+    function exitPage() {
+      document.body.innerHTML = "<h2>Thanks for using the timer! See ya, champ!</h2>";
+    }
+  </script>
+
+</body>
+</html>
